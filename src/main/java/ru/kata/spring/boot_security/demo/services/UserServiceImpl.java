@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
@@ -26,8 +26,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public User findById(Long id) throws RuntimeException {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) {
+            throw new RuntimeException();
+        }
+        return user;
     }
 
     @Override
@@ -56,9 +60,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByUsername(email);
     }
 
-    @Override
+/*    @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
-    }
+    }*/
 }

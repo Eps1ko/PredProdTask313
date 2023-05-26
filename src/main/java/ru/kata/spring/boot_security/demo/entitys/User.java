@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -147,6 +148,22 @@ public class User implements UserDetails {
 
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getFirstname(),
+                user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getEmail(),
+                user.getEmail()) && Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(),
+                user.getPassword()) && Objects.equals(getRoleSet(), user.getRoleSet());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getFirstname(), getLastname(), getEmail(), getUsername(),
+                getPassword(), getRoleSet());
     }
 }
 
